@@ -3,7 +3,7 @@ package app
 import (
 	"auth-microservice/config"
 	"auth-microservice/pkg/httpserver"
-	"auth-microservice/pkg/postgres"
+	"auth-microservice/pkg/mongodb"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -15,10 +15,10 @@ import (
 
 func Run(cfg *config.Config) {
 
-	_, err := postgres.New(cfg)
+	_, err := mongodb.NewMongo(cfg)
 
 	if err != nil {
-		log.Fatal("Error in creating postgres.bank instance")
+		log.Fatal("Cannot connect to Mongo")
 	}
 
 	handler := gin.New()
