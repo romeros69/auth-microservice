@@ -15,5 +15,6 @@ func NewRouter(
 
 	{
 		newLoginRoutes(h, userUC, jwtUC)
+		newLogoutRoutes(h, jwtUC)
 	}
 }
