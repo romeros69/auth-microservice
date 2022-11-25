@@ -2,6 +2,9 @@ package app
 
 import (
 	"auth-microservice/config"
+	v1 "auth-microservice/internal/controller/http/v1"
+	"auth-microservice/internal/usecase"
+	"auth-microservice/internal/usecase/repo"
 	"auth-microservice/pkg/httpserver"
 	"auth-microservice/pkg/mongodb"
 	"github.com/gin-contrib/cors"
@@ -15,7 +18,7 @@ import (
 
 func Run(cfg *config.Config) {
 
-	_, err := mongodb.NewMongo(cfg)
+	mng, err := mongodb.NewMongo(cfg)
 
 	if err != nil {
 		log.Fatal("Cannot connect to Mongo")
@@ -30,6 +33,12 @@ func Run(cfg *config.Config) {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	userRepo := repo.NewUserRepo(mng, "accounts") // FIXME -> do constant
+	userUC := usecase.NewUserUseCase(userRepo)
+	jwtUC := usecase.NewJwtUseCase(userUC, cfg.JwtSecret)
+
+	v1.NewRouter(handler, userUC, jwtUC)
 
 	serv := httpserver.New(handler, httpserver.Port(cfg.Port))
 	interruption := make(chan os.Signal, 1)
