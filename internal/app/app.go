@@ -16,6 +16,8 @@ import (
 	"time"
 )
 
+const collectionName = "accounts"
+
 func Run(cfg *config.Config) {
 
 	mng, err := mongodb.NewMongo(cfg)
@@ -34,7 +36,7 @@ func Run(cfg *config.Config) {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	userRepo := repo.NewUserRepo(mng, "accounts") // FIXME -> do constant
+	userRepo := repo.NewUserRepo(mng, collectionName)
 	userUC := usecase.NewUserUseCase(userRepo)
 	jwtUC := usecase.NewJwtUseCase(userUC, cfg.JwtSecret)
 

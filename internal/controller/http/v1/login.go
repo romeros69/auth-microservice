@@ -29,12 +29,12 @@ func (l *loginRoutes) login(c *gin.Context) {
 		errorResponse(c, http.StatusBadRequest, "cannot parse user data")
 		return
 	}
-	// FIXME - do norm validation
-	if len(lg.Email) < 4 || len(lg.Password) < 4 {
+	err := validateLogin(lg.Email, lg.Password)
+	if err != nil {
 		errorResponse(c, http.StatusBadRequest, "error format of login")
 		return
 	}
-	err := l.jwtUC.CompareUserPassword(c.Request.Context(), entity.User{
+	err = l.jwtUC.CompareUserPassword(c.Request.Context(), entity.User{
 		Email:    lg.Email,
 		Password: lg.Password,
 	})
