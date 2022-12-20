@@ -10,7 +10,7 @@ import (
 // @version 1.0
 // @description API for auth microservice
 
-// @host localhost:9000
+// @host 51.250.108.95:9000
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth

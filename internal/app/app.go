@@ -28,7 +28,7 @@ func Run(cfg *config.Config) {
 
 	handler := gin.New()
 	handler.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://51.250.108.95:9000"},
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"Access-Control-Allow-Origin", "Content-Type", "Access-Control-Allow-Credentials", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},

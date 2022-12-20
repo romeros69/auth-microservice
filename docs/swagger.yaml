@@ -12,7 +12,7 @@ definitions:
       password:
         type: string
     type: object
-host: localhost:9000
+host: 51.250.108.95:9000
 info:
   contact: {}
   description: API for auth microservice
