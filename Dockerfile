@@ -17,4 +17,5 @@ FROM scratch
 EXPOSE 9011
 COPY --from=builder /app/config /config
 COPY --from=builder /bin/app /app
+CMD ["mkdir --parents ~/.mongodb && wget 'https://storage.yandexcloud.net/cloud-certs/CA.pem' --output-document ~/.mongodb/root.crt && chmod 0644 ~/.mongodb/root.crt"]
 CMD ["/app"]
