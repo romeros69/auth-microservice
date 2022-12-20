@@ -1,17 +1,17 @@
 version: '3.7'
 
 services:
-  mongodb:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - '27017:27017'
-    volumes:
-      - ./migrations/init.js:/docker-entrypoint-initdb.d/init.js:ro
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=mongo
-      - MONGO_INITDB_ROOT_PASSWORD=mongo
-      - MONGO_INITDB_DATABASE=users
+#  mongodb:
+#    image: mongo
+#    container_name: mongodb
+#    ports:
+#      - '27017:27017'
+#    volumes:
+#      - ./migrations/init.js:/docker-entrypoint-initdb.d/init.js:ro
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=mongo
+#      - MONGO_INITDB_ROOT_PASSWORD=mongo
+#      - MONGO_INITDB_DATABASE=users
 
   auth:
     container_name: 'auth'
@@ -20,3 +20,4 @@ services:
       dockerfile: Dockerfile
     ports:
       - '9000:9000'
+      - '9011:9011'
