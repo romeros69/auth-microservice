@@ -2,11 +2,13 @@ package app
 
 import (
 	"auth-microservice/config"
+	servGrpc "auth-microservice/internal/controller/grpc"
 	v1 "auth-microservice/internal/controller/http/v1"
 	"auth-microservice/internal/usecase"
 	"auth-microservice/internal/usecase/repo"
 	"auth-microservice/pkg/httpserver"
 	"auth-microservice/pkg/mongodb"
+	"auth-microservice/pkg/rpc"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -41,6 +43,17 @@ func Run(cfg *config.Config) {
 	jwtUC := usecase.NewJwtUseCase(userUC, cfg.JwtSecret)
 
 	v1.NewRouter(handler, userUC, jwtUC)
+
+	grpcServer, err := rpc.New(cfg)
+	if err != nil {
+		log.Fatalf("error in creating grp server: %s", err.Error())
+	}
+	authRegRpcServer := servGrpc.NewAuthRegRpcServer(jwtUC, userUC)
+	err = grpcServer.Start(authRegRpcServer)
+
+	if err != nil {
+		log.Fatalf("error in start grpc: %s", err.Error())
+	}
 
 	serv := httpserver.New(handler, httpserver.Port(cfg.Port))
 	interruption := make(chan os.Signal, 1)
